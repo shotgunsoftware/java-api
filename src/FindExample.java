@@ -5,7 +5,7 @@ import com.shotgunsoftware.*;
 class FindExample {
     public static void main(String[] args) {
         try {
-            URL u = new URL("http://127.0.0.1:3000/api3/");
+            URL u = new URL("http://yourshotgunserver.com/api3/");
             Shotgun s = new Shotgun(u, "kp_testing", "9e795d3df53d1aea43b61f7c4a8dfa93c29c4ead");
             
             FindRequest fr = new FindRequest("Shot");
