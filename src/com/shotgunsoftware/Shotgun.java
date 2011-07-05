@@ -15,6 +15,8 @@ import org.apache.xmlrpc.serializer.NullSerializer;
 import org.apache.ws.commons.util.NamespaceContextImpl;
 import org.apache.xmlrpc.XmlRpcException;
 
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
 /**
  * Shotgun XML-RPC API Wrapper
  * 
@@ -194,7 +196,97 @@ public class Shotgun {
         
         return (didDelete.equals(Boolean.TRUE));
     }
-    
+
+    /**
+     * Return the shotgun schema
+     * 
+     * Well, it would but can't figure out how to pass no arguments through java xmlrpc
+     * @return  
+     * @throws  XmlRpcException if the request failed
+     */
+    public Map schema_read() throws XmlRpcException {
+    	throw new NotImplementedException();
+    	/**
+    	Object[] params = new Object[] { this.auth, new HashMap()};
+        Map response = (Map)this.client.execute("schema_read", params);
+        Map results = (Map)response.get("results");        
+        return results;
+        **/
+    }
+
+    public Map schema_field_read(String entity_type, String field_name) throws XmlRpcException {
+        HashMap req = new HashMap();
+        req.put("type", entity_type);
+        if (field_name != null)
+            req.put("field_name", field_name);
+        Object[] params = new Object[] { this.auth, req };
+        Map response = (Map)this.client.execute("schema_field_read", params);
+        Map results = (Map)response.get("results");        
+        return results;
+    }
+
+    public String schema_field_create(String entity_type, String data_type, String display_name, 
+    		Map properties) throws XmlRpcException {
+        if (properties == null)
+        	properties = new HashMap();
+        List fields = new ArrayList();
+        
+        HashMap rf = new HashMap();
+        rf.put("property_name", "name");
+        rf.put("value", display_name);
+        fields.add(rf);            
+        for ( Iterator iter = properties.entrySet().iterator(); iter.hasNext(); ) {
+            Entry e = (Entry)iter.next();
+            rf = new HashMap();
+            String key = (String)e.getKey();
+            rf.put("property_name", key);
+            rf.put("value", e.getValue());
+            fields.add(rf);            
+        }
+        HashMap req = new HashMap();
+        req.put("type", entity_type);
+        req.put("data_type", data_type);
+        req.put("properties", fields);
+        Object[] params = new Object[] { this.auth, req };
+        Map response = (Map)this.client.execute("schema_field_create", params);
+        String field_name = (String)response.get("results");        
+        return field_name;
+    }
+
+    public boolean schema_field_update(String entity_type, String field_name, Map properties) throws XmlRpcException {
+        if (properties == null)
+        	properties = new HashMap();
+        List fields = new ArrayList();
+        
+        HashMap rf = new HashMap();
+        for ( Iterator iter = properties.entrySet().iterator(); iter.hasNext(); ) {
+            Entry e = (Entry)iter.next();
+            rf = new HashMap();
+            String key = (String)e.getKey();
+            rf.put("property_name", key);
+            rf.put("value", e.getValue());
+            fields.add(rf);            
+        }
+        HashMap req = new HashMap();
+        req.put("type", entity_type);
+        req.put("field_name", field_name);
+        req.put("properties", fields);
+        Object[] params = new Object[] { this.auth, req };
+        Map response = (Map)this.client.execute("schema_field_update", params);
+        Boolean didDelete = (Boolean)response.get("results");        
+        return (didDelete.equals(Boolean.TRUE));
+    }
+
+    public boolean schema_field_delete(String entity_type, String field_name) throws XmlRpcException {
+        HashMap req = new HashMap();
+        req.put("type", entity_type);
+        req.put("field_name", field_name);
+        Object[] params = new Object[] { this.auth, req };
+        Map response = (Map)this.client.execute("schema_field_delete", params);
+        Boolean didDelete = (Boolean)response.get("results");        
+        return (didDelete.equals(Boolean.TRUE));
+    }
+
     class MyTypeFactory extends TypeFactoryImpl {
         public MyTypeFactory(XmlRpcController pController) {
             super(pController);
@@ -210,4 +302,5 @@ public class Shotgun {
             }
         }
     }
+
 }
