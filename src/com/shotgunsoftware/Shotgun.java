@@ -15,8 +15,6 @@ import org.apache.xmlrpc.serializer.NullSerializer;
 import org.apache.ws.commons.util.NamespaceContextImpl;
 import org.apache.xmlrpc.XmlRpcException;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 /**
  * Shotgun XML-RPC API Wrapper
  * 
@@ -205,7 +203,7 @@ public class Shotgun {
      * @throws  XmlRpcException if the request failed
      */
     public Map schema_read() throws XmlRpcException {
-    	throw new NotImplementedException();
+    	throw new UnsupportedOperationException();
     	/**
     	Object[] params = new Object[] { this.auth, new HashMap()};
         Map response = (Map)this.client.execute("schema_read", params);
