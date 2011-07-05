@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<project default="jar">
+  <path id="java-api.classpath">
+    <pathelement location="classes"/>
+    <pathelement location="lib/ws-commons-util-1.0.2.jar"/>
+    <pathelement location="lib/xmlrpc-client-3.1.3.jar"/>
+    <pathelement location="lib/xmlrpc-common-3.1.3.jar"/>
+    <pathelement location="lib/ws-commons-java5-1.0.1.jar"/>
+  </path>
+  <target name="clean">
+     <delete dir="classes"/>
+  </target>
+	
+  <target depends="clean" name="compile">
+  	<mkdir dir="classes"/>
+    <javac srcdir="src" destdir="classes">
+     <classpath refid="java-api.classpath"/>
+    </javac>
+  </target>
+
+  <target depends="compile" name="jar">
+    <jar destfile="shotgun_client.jar">
+        <fileset dir="classes">
+        	<include name="com/shotgunsoftware/*.class"/>
+        </fileset>
+    	<manifest>
+  	        <attribute name="Built-By" value="${user.name}"/>
+  	    </manifest>
+  	</jar>
+  </target>
+</project>
