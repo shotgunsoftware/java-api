@@ -13,7 +13,7 @@
 	
   <target depends="clean" name="compile">
   	<mkdir dir="classes"/>
-    <javac srcdir="src" destdir="classes">
+    <javac srcdir="src" destdir="classes" executable=" /sw/os/swhouse/javajdk_1.4/bin/javac" compiler="javac1.4" source="1.4" target="1.4">
      <classpath refid="java-api.classpath"/>
     </javac>
   </target>
