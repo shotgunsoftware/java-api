@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Vector;
 import java.util.Map.Entry;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -193,6 +194,55 @@ public class Shotgun {
         Boolean didDelete = (Boolean)response.get("results");
         
         return (didDelete.equals(Boolean.TRUE));
+    }
+
+    /**
+     * Batch a series of update requests
+     * 
+     * @param   br  A list of Batch Requests
+     * @return  a List of Map of field names to field values for the created entity
+     * @throws  XmlRpcException if the request failed
+     */
+    public Object[] batch(BatchRequest[] br) throws XmlRpcException {
+    	List req = new Vector();    	
+    	for (int index = 0; index < br.length; index++) {
+			Map hr = new HashMap();
+			hr.put("request_type", br[index].requestType);
+			hr.put("type", br[index].entityType);
+    		if (br[index].requestType.equals("create")) {
+    			List fields = new Vector();
+    			for (Iterator entry_it = br[index].data.entrySet().iterator(); entry_it.hasNext(); ) {
+        			Map.Entry entry = (Map.Entry) entry_it.next();
+        			Map e = new HashMap();
+        			e.put("field_name", entry.getKey());
+        			e.put("value", entry.getValue());
+        			fields.add(e);
+    			}
+    			hr.put("fields", fields.toArray());
+    		} else if (br[index].requestType.equals("update")) {
+    			hr.put("id", br[index].entityId);
+    			List fields = new Vector();
+    			for (Iterator entry_it = br[index].data.entrySet().iterator(); entry_it.hasNext(); ) {
+        			Map.Entry entry = (Map.Entry) entry_it.next();
+        			Map e = new HashMap();
+        			e.put("field_name", entry.getKey());
+        			e.put("value", entry.getValue());
+        			fields.add(e);
+    			}
+    			hr.put("fields", fields.toArray());
+    		} else if (br[index].requestType.equals("delete")) {
+    			hr.put("id", br[index].entityId);
+    		}
+    		req.add(hr);
+    	}
+        Object[] params = new Object[] { this.auth, req.toArray() };
+        Map response = (Map)this.client.execute("batch", params);
+        Object[] results = (Object[]) response.get("results");        
+        return results;
+    }
+
+    public Object[] batch(List br) throws XmlRpcException {
+    	return batch((BatchRequest[]) br.toArray());
     }
 
     /**
