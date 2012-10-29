@@ -33,21 +33,27 @@ class UpdateExample {
             
             Map r = s.update(ur);
             Object[] assets = (Object[])r.get("assets");
-            System.out.println(java.util.Arrays.toString(assets));
+            for (int index = 0; index < assets.length; index++)
+            	System.out.print(assets[index].toString());
+            System.out.println();
             
             // Now let's re-run the update in "remove" mode.
             modes.put("assets", "remove");
             
             r = s.update(ur);
             assets = (Object[])r.get("assets");
-            System.out.println(java.util.Arrays.toString(assets));
+            for (int index = 0; index < assets.length; index++)
+            	System.out.print(assets[index].toString());
+            System.out.println();
             
             // Add it back in for the next step.
             modes.put("assets", "add");
             
             r = s.update(ur);
             assets = (Object[])r.get("assets");
-            System.out.println(java.util.Arrays.toString(assets));
+            for (int index = 0; index < assets.length; index++)
+            	System.out.print(assets[index].toString());
+            System.out.println();
             
             // Now set a field on the connection between the Shot and Asset. To do this,
             // we need to pass the desired asset to the request.
