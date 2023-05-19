@@ -12,8 +12,8 @@ class BatchExample {
     private static final String SCRIPT_KEY;
     private static final String SCRIPT_NAME;
 
-    private static final String DEFAULT_SHOTGUN_SERVER = "http://shotgun-dev.fas.fa.disney.com/api3";
-    private static final String DEFAULT_SHOTGUN_KEY = "4b5a0063ed0bba6fea045b7eff7b77a9375353d5";
+    private static final String DEFAULT_SHOTGUN_SERVER = "http://my-example.shotgunstudio.com/api3";
+    private static final String DEFAULT_SHOTGUN_KEY = "da39a3ee5e6b4b0d3255bfef95601890afd80709";
     private static final String DEFAULT_SCRIPT_NAME = "testScript";
 
     static {
